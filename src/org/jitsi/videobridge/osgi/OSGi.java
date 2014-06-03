@@ -77,6 +77,9 @@ public class OSGi
                 "org/jitsi/videobridge/rest/RESTBundleActivator"
             },
             {
+                "com/collabip/tethr/rabbitapi/RabbitBundleActivator"
+            },
+            {
                 "org/jitsi/videobridge/osgi/OSGiBundleActivator"
             }
         };
