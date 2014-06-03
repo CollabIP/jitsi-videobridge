@@ -18,15 +18,11 @@ public class RabbitApi {
 	/**
 	 * Exchange name for outgoing rabbit messages.
 	 */
-	public static final String EXCHANGE_PNAME = CONFIG_PNAME + "EXCHANGE_NAME";
+	public static final String ICE_CANDIDATE_EXCHANGE_PNAME = CONFIG_PNAME + "ICE_CANDIDATE_EXCHANGE_NAME";
+	public static final String ANSWER_EXCHANGE_PNAME = CONFIG_PNAME + "ANSWER_EXCHANGE_NAME";
 	
 	/**
 	 * Rabbit connect string.
 	 */
 	public static final String CONNECT_STRING = CONFIG_PNAME + "CONNECT_STRING";
-	
-	
-	
-	
-
 }
