@@ -18,37 +18,33 @@ import org.osgi.framework.BundleContext;
  */
 public class RabbitBundleActivator implements BundleActivator {
 
-	private static final Logger logger = Logger.getLogger(RabbitBundleActivator.class);
+	private static final Logger _logger = Logger.getLogger(RabbitBundleActivator.class);
 	
-	private RabbitApi rabbitApi;
-	
-	
+	private RabbitApi _rabbitApi;	
 	
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
-		logger.info("Starting rabbit bundle...");
+		_logger.info("Starting rabbit bundle...");
 		
-        ConfigurationService cfg
-        = ServiceUtils.getService(
-                bundleContext,
-                ConfigurationService.class);
+        ConfigurationService cfg = ServiceUtils.getService(bundleContext, ConfigurationService.class);
         
         List<String> props = cfg.getAllPropertyNames();
         
         for (String d: props)
         {
-        	logger.info("Configuration option: " + d);
+        	_logger.info("Configuration option: " + d);
         }
         
-        logger.info("Configuration file filename: " + cfg.getConfigurationFilename());
+        _logger.info("Configuration file filename: " + cfg.getConfigurationFilename());
         
-        rabbitApi = new RabbitApi();
-
+        _rabbitApi = new RabbitApi(bundleContext);
+        _rabbitApi.setDaemon(false);
+        _rabbitApi.start();
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		logger.info("Stopping rabbit bundle...");
+		_logger.info("Stopping rabbit bundle...");
 
 	}
 
