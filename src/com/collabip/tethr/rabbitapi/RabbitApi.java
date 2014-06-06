@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.beans.*;
 
 import net.java.sip.communicator.util.ServiceUtils;
 
@@ -19,7 +20,7 @@ import org.osgi.framework.BundleContext;
 
 import com.rabbitmq.client.*;
 
-public class RabbitApi extends Thread{
+public class RabbitApi extends Thread {
 
 	/*
 	 * Termination sync object for this thread
@@ -56,7 +57,7 @@ public class RabbitApi extends Thread{
 	private Connection _conn;
 	private BundleContext _bundleContext;
 	
-	private Map<String, Conference> _conferences = new HashMap<String, Conference>();
+	private Map<String, String> _conferences = new HashMap<String, String>();
 	
 	public RabbitApi(BundleContext bundleContext) throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException
 	{
@@ -154,7 +155,7 @@ public class RabbitApi extends Thread{
 		}
 	}
 
-	public Map<String, Conference> get_conferences() {
+	public Map<String, String> get_conferences() {
 		return _conferences;
 	}
 }

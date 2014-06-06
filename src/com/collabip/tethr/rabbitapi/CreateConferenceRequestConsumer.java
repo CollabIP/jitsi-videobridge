@@ -1,16 +1,10 @@
 package com.collabip.tethr.rabbitapi;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
-import net.java.sip.communicator.impl.protocol.jabber.extensions.colibri.ColibriConferenceIQ;
 
 import org.jitsi.util.Logger;
 import org.jitsi.videobridge.Conference;
 import org.jitsi.videobridge.Videobridge;
-import org.json.simple.JSONObject;
-
 import com.collabip.tethr.rabbitapi.messages.CreateVideoConferenceRequest;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.*;
@@ -47,10 +41,11 @@ public class CreateConferenceRequestConsumer extends DefaultConsumer {
 			
 			Videobridge videoBridge = _rabbitApi.getVideobridge();
 	        
-	        Conference conf = videoBridge.createConference(null);
+			Conference conf = videoBridge.createConference(null);
 	        
-	        _rabbitApi.get_conferences().put(rq.MeetingId, conf);
-	        
+	        // Even though the video conference may expire and have to be
+			// recreated we will remember it on this server.
+			_rabbitApi.get_conferences().put(rq.MeetingId, conf.getID());	        
 		} catch (JsonSyntaxException e)
 		{
 			e.printStackTrace();

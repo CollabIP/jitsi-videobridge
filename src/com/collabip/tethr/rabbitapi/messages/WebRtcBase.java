@@ -1,6 +1,5 @@
 package com.collabip.tethr.rabbitapi.messages;
 
-import java.util.Date;
 
 public class WebRtcBase {
 	public MessageSource Source;
@@ -13,5 +12,5 @@ public class WebRtcBase {
 
 	public String MeetingId;
 
-	public Date TimeStampUtc;	
+	public String TimeStampUtc;	
 }
