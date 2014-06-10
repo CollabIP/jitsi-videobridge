@@ -41,7 +41,7 @@ public class CreateConferenceRequestConsumer extends DefaultConsumer {
 			
 			Videobridge videoBridge = _rabbitApi.getVideobridge();
 	        
-			Conference conf = videoBridge.createConference(null);
+			Conference conf = videoBridge.createConference("internal");
 	        
 	        // Even though the video conference may expire and have to be
 			// recreated we will remember it on this server.

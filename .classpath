@@ -23,7 +23,7 @@
 	<classpathentry kind="lib" path="lib/osgi.core.jar"/>
 	<classpathentry kind="lib" path="lib/packetlogging.jar"/>
 	<classpathentry kind="lib" path="lib/protocol.jar"/>
-	<classpathentry kind="lib" path="lib/protocol-jabber.jar"/>
+	<classpathentry kind="lib" path="lib/protocol-jabber.jar" sourcepath="/jitsi/src/net/java/sip/communicator/impl/protocol/jabber/extensions/colibri"/>
 	<classpathentry kind="lib" path="lib/protocol-media.jar"/>
 	<classpathentry kind="lib" path="lib/resourcemanager.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-3.1.jar"/>
@@ -45,5 +45,8 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Program%20Files/eclipse/Libs/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jain-sip-api.jar"/>
+	<classpathentry kind="lib" path="lib/jain-sip-ri.jar"/>
+	<classpathentry kind="lib" path="lib/jain-sdp.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

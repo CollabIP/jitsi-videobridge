@@ -2,6 +2,8 @@ package com.collabip.tethr.rabbitapi;
 
 import java.io.IOException;
 
+import net.java.sip.communicator.impl.protocol.jabber.extensions.colibri.ColibriConferenceIQ;
+
 import org.jitsi.util.Logger;
 import org.jitsi.videobridge.Conference;
 import org.jitsi.videobridge.Videobridge;
@@ -36,6 +38,8 @@ public class OfferConsumer extends DefaultConsumer {
 		String jsondata = new String(body, "UTF-8");
 		WebRtcVideoOffer offer = null;
 		
+		_channel.basicAck(envelope.getDeliveryTag(), false);
+		
 		try {
 			Gson gson = new Gson();
 			offer = gson.fromJson(jsondata, WebRtcVideoOffer.class);
@@ -57,14 +61,13 @@ public class OfferConsumer extends DefaultConsumer {
 			}
 			
 			_logger.info(String.format("Processing offer from %1$s", offer.ParticipantId));
+			SdpConverter sdp = new SdpConverter(offer.Offer);
+			ColibriConferenceIQ iq = sdp.get_OtherContent(conf);
+			_rabbitApi.getVideobridge().handleColibriConferenceIQ(iq);
 			
 		} catch (Throwable e)
 		{
 			e.printStackTrace();
-		}
-		
-				
-		_channel.basicAck(envelope.getDeliveryTag(), false);
-		
+		}		
 	}
 }
