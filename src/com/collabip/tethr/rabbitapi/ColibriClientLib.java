@@ -12,6 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
+/**
+ * Exposes JavaScript functions from the browser-side client
+ * library. 
+ * @author chaz
+ * 
+ */
+
 public class ColibriClientLib extends Thread{
 
 	public final static ColibriClientLib instance = new ColibriClientLib();
@@ -68,8 +75,19 @@ public class ColibriClientLib extends Thread{
 			
 			_scope=_cx.initStandardObjects();
 			_cx.evaluateString(_scope, "var print=function(value){java.lang.System.out.println(value)};", "setup", 1, null);
-			_cx.evaluateReader(_scope, new FileReader("env.rhino.1.2.js"), "envjs", 1, null);
-			_cx.evaluateReader(_scope, new FileReader("colibri-all.js"), "colibri-all", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/env.rhino.1.2.js"), "envjs", 1, null);
+			
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.adapter.js"), "strophe.jingle.adaptor", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.bundle.js"), "strophe.jingle.bundle", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.js"), "strophe.jingle", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.sdp.js"), "strophe.jingle.sdp", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.sdp.util.js"), "strophe.jingle.sdp.util", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.sessionbase.js"), "strophe.jingle.sessionbase", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/strophe/strophe.jingle.session.js"), "strophe.jingle.session", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/colibri/colibri.focus.js"), "colibri.focus", 1, null);
+			_cx.evaluateReader(_scope, new FileReader("js/colibri/colibri.session.js"), "colibri.session", 1, null);
+			
+			_cx.evaluateReader(_scope, new FileReader("js/colibri-if.js"), "colibri-if", 1, null);
 					
 			_functions = new HashMap<COMMAND, Function>();
 			

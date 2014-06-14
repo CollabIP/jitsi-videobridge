@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SDP JSON converter</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src='strophe/strophe.jingle.adapter.js'></script>
+    <script src='strophe/strophe.jingle.bundle.js'></script>
+    <script src='strophe/strophe.jingle.js'></script>
+    <script src='strophe/strophe.jingle.sdp.js'></script>
+    <script src='strophe/strophe.jingle.sdp.util.js'></script>
+    <script src='strophe/strophe.jingle.sessionbase.js'></script>
+    <script src='strophe/strophe.jingle.session.js'></script>
+    <script src='colibri/colibri.focus.js'></script>
+    <script src='colibri/colibri.session.js'></script>
+    <script src='colibri-if.js'></script>
+    <style type='text/css'>
+html,body {margin:0px;}
+textarea {position:absolute;top:10px;bottom:40px;width:48%;}
+#sdptext {left:10px;}
+#jsontext {right:10px;}
+button {position:absolute;bottom:5px;line-height:18px;}
+#tojson {left:10px;}
+#tosdp {left:51%;}
+    </style>
+    <script type="text/javascript" charset="utf-8">
+function toJSON() {
+  var sdp = document.getElementById('sdptext').value;
+  sdp = sdp.replace(/\r\n/g, '\n');
+  sdp = sdp.replace(/\n/g, '\r\n');
+
+  document.getElementById('jsontext').value = SdpToIq(sdp);
+}
+
+function toSDP() {
+  var json = JSON.parse(document.getElementById('jsontext').value);
+  document.getElementById('sdptext').value = exports.toSessionSDP(json);
+}
+    </script>
+  </head>
+  <body>
+    <textarea id='sdptext' placeholder='Your SDP here'></textarea>
+    <button id='tojson' onclick='toJSON()'>To JSON</button>
+    <textarea id='jsontext' placeholder='Your JSON here'></textarea>
+    <button id='tosdp' onClick='toSDP()'>To SDP</button>
+  </body>
+</html>
