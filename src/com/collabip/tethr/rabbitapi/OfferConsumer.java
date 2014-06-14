@@ -51,19 +51,31 @@ public class OfferConsumer extends DefaultConsumer {
 			{
 				return;
 			}
-			
-			Conference conf = _rabbitApi.getVideobridge().getConference(confId, null);
-			if(conf == null)
-			{
-				// Conference expired, we need to recreate it
-				conf = _rabbitApi.getVideobridge().createConference(null);
-				_rabbitApi.get_conferences().put(offer.MeetingId, conf.getID());
-			}
-			
+						
 			_logger.info(String.format("Processing offer from %1$s", offer.ParticipantId));
 			SdpConverter sdp = new SdpConverter(offer.Offer);
-			ColibriConferenceIQ iq = sdp.get_OtherContent(conf);
-			_rabbitApi.getVideobridge().handleColibriConferenceIQ(iq);
+			ColibriConferenceIQ iq = sdp.get_ContentScript(offer.MeetingId, offer.ParticipantId);
+			
+			// If we do not set an ID on the IQ, then the 
+			// IQ specifies a new conference. Here we set 
+			// the ID if the conference has already been created.
+			if(!confId.isEmpty())
+			{
+				iq.setID(confId);
+			}
+			
+			ColibriConferenceIQ response = _rabbitApi.getVideobridge().handleColibriConferenceIQ(iq);
+			
+			// If we just created the conference, remember the 
+			// conference ID
+			if(confId.isEmpty())
+			{
+				_rabbitApi.get_conferences().put(offer.MeetingId, response.getID());
+			}
+			
+						
+			_logger.info("Response: " + response.toXML());
+			
 			
 		} catch (Throwable e)
 		{

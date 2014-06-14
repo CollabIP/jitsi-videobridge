@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SDP JSON converter</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	var parsers = {};
+	var exports = {};
+	</script>
+    <script src='colibri-all.js'></script>
+    <style type='text/css'>
+html,body {margin:0px;}
+textarea {position:absolute;top:10px;bottom:40px;width:48%;}
+#sdptext {left:10px;}
+#jsontext {right:10px;}
+button {position:absolute;bottom:5px;line-height:18px;}
+#tojson {left:10px;}
+#tosdp {left:51%;}
+    </style>
+    <script type="text/javascript" charset="utf-8">
+function toJSON() {
+  var sdp = document.getElementById('sdptext').value;
+  sdp = sdp.replace(/\r\n/g, '\n');
+  sdp = sdp.replace(/\n/g, '\r\n');
+
+
+    this.peers = [];
+    var self = this;
+
+    var elem = $iq({to: "thebridge", type: 'get'});
+    elem.c('conference', {xmlns: 'http://jitsi.org/protocol/colibri'});
+
+    this.media = ['video'];
+
+
+    this.media.forEach(function (name) {
+        elem.c('content', {name: name});
+        elem.c('channel', {
+            initiator: 'true',
+            expire: '15',
+            endpoint: 'fix_me_focus_endpoint'}).up();
+        for (var j = 0; j < self.peers.length; j++) {
+            elem.c('channel', {
+                initiator: 'true',
+                expire: '15',
+                endpoint: self.peers[j].substr(1 + self.peers[j].lastIndexOf('/'))
+            }).up();
+        }
+        elem.up(); // end of content
+    });
+
+    var localSDP = new SDP(sdp);
+    localSDP.media.forEach(function (media, channel) {
+        var name = SDPUtil.parse_mline(media.split('\r\n')[0]).media;
+        elem.c('content', {name: name});
+        elem.c('channel', {initiator: 'false', expire: '15'});
+
+        // FIXME: should reuse code from .toJingle
+        var mline = SDPUtil.parse_mline(media.split('\r\n')[0]);
+        for (var j = 0; j < mline.fmt.length; j++) {
+            var rtpmap = SDPUtil.find_line(media, 'a=rtpmap:' + mline.fmt[j]);
+            elem.c('payload-type', SDPUtil.parse_rtpmap(rtpmap));
+            elem.up();
+        }
+
+        localSDP.TransportToJingle(channel, elem);
+
+        elem.up(); // end of channel
+        for (j = 0; j < self.peers.length; j++) {
+            elem.c('channel', {initiator: 'true', expire:'15' }).up();
+        }
+        elem.up(); // end of content
+    });
+
+  document.getElementById('jsontext').value = elem;
+}
+
+function toSDP() {
+  var json = JSON.parse(document.getElementById('jsontext').value);
+  document.getElementById('sdptext').value = exports.toSessionSDP(json);
+}
+    </script>
+  </head>
+  <body>
+    <textarea id='sdptext' placeholder='Your SDP here'></textarea>
+    <button id='tojson' onclick='toJSON()'>To JSON</button>
+    <textarea id='jsontext' placeholder='Your JSON here'></textarea>
+    <button id='tosdp' onClick='toSDP()'>To SDP</button>
+  </body>
+</html>

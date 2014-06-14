@@ -39,13 +39,7 @@ public class CreateConferenceRequestConsumer extends DefaultConsumer {
 			
 			_logger.info("Received Create Conference message: " + rq.MeetingId);
 			
-			Videobridge videoBridge = _rabbitApi.getVideobridge();
-	        
-			Conference conf = videoBridge.createConference("internal");
-	        
-	        // Even though the video conference may expire and have to be
-			// recreated we will remember it on this server.
-			_rabbitApi.get_conferences().put(rq.MeetingId, conf.getID());	        
+			_rabbitApi.get_conferences().put(rq.MeetingId, "");	        
 		} catch (JsonSyntaxException e)
 		{
 			e.printStackTrace();

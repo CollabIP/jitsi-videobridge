@@ -48,5 +48,7 @@
 	<classpathentry kind="lib" path="lib/jain-sip-api.jar"/>
 	<classpathentry kind="lib" path="lib/jain-sip-ri.jar"/>
 	<classpathentry kind="lib" path="lib/jain-sdp.jar"/>
+	<classpathentry kind="lib" path="lib/js-14.jar"/>
+	<classpathentry kind="lib" path="lib/js.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

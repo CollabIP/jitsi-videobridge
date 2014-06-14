@@ -53,6 +53,11 @@ public class RabbitApi extends Thread {
 	 */
 	public static final String CONNECT_STRING_PNAME = CONFIG_PNAME + "CONNECT_STRING";
 	
+	/**
+	 * IP address for SDP's
+	 */
+	public static final String IP_ADDRESS_PNAME = CONFIG_PNAME + "IP_ADDRESS";
+	
 	private ConfigurationService _config;
 	private Connection _conn;
 	private BundleContext _bundleContext;
